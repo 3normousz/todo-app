@@ -3,10 +3,13 @@ import '../index.css'
 
 import clsx from 'clsx'
 
-function Cell({ className, children }) {
+function Cell({ className, onClick, children }) {
     return (
         <>
-            <div className={clsx("h-12 flex items-center justify-center", className)}>{children}</div>
+            <div className={clsx("h-12 flex items-center justify-center hover:bg-gray-100", className)}
+                onClick={onClick}>
+                {children}
+            </div>
         </>
     )
 }
