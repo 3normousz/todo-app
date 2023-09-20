@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Calendar from "./Calendar/Calendar"
+import Calendar from "./calendar/Calendar"
 import './index.css'
 
 function App() {

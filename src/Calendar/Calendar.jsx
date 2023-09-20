@@ -6,6 +6,15 @@ import '../index.css'
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function Calendar({ value = new Date(), onChange }) {
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const handleSetToday = () => {
+        const today = new Date();
+        setCurrentDate(today);
+        if (onChange) {
+            onChange(today);
+        }
+    };
+
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
     const numDays = differenceInDays(endDate, startDate) + 1;
@@ -24,7 +33,8 @@ function Calendar({ value = new Date(), onChange }) {
         <>
             <div className='w-[400px] border'>
                 <div className='grid grid-cols-7'>
-                    <Cell className='col-span-5 font-bold'>{format(value, "LLLL yyyy")}</Cell>
+                    <Cell className='col-span-4 font-bold'>{format(value, "LLLL yyyy")}</Cell>
+                    <Cell className='rounded' onClick={handleSetToday}>{"Today"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={prevMonth}>{"<"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={nextMonth}>{">"}</Cell>
 
@@ -40,7 +50,12 @@ function Calendar({ value = new Date(), onChange }) {
 
                     {Array.from({ length: numDays }).map((_, index) => {
                         const date = index + 1;
-                        return <Cell>{date}</Cell>;
+                        const isCurrentDate = (
+                            date === value.getDate() &&
+                            value.getMonth() === currentDate.getMonth() &&
+                            value.getFullYear() === currentDate.getFullYear()
+                        );
+                        return <Cell isActive={isCurrentDate}>{date}</Cell>;
                     })}
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
