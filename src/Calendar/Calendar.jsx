@@ -69,14 +69,16 @@ function Calendar({ value = new Date(), onChange }) {
                             value.getFullYear() === currentDate.getFullYear()
                         );
                         let isSelectedDate = false;
+                        let isSelectedFlag = false;
                         if (selectedDate) {
                             isSelectedDate = (
                                 date === value.getDate() &&
                                 value.getMonth() === selectedDate.getMonth() &&
                                 value.getFullYear() === selectedDate.getFullYear()
                             );
+                            isSelectedFlag = true;
                         }
-                        return <Cell onClick={() => handleClickDate(date)} isActive={isCurrentDate} isSelected={isSelectedDate}>{date}</Cell>;
+                        return <Cell onClick={() => handleClickDate(date)} isActive={isCurrentDate} isSelected={isSelectedDate} isSelectedFlag={isSelectedFlag}>{date}</Cell>;
                     })}
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
