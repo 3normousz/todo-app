@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { startOfMonth, endOfMonth, differenceInDays, sub, format, add } from 'date-fns'
+import { startOfMonth, endOfMonth, differenceInDays, sub, format, add, setDate } from 'date-fns'
 import Cell from './Cell'
 import '../index.css'
 
@@ -7,6 +7,8 @@ const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function Calendar({ value = new Date(), onChange }) {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(null);
+
     const handleSetToday = () => {
         const today = new Date();
         setCurrentDate(today);
@@ -14,6 +16,17 @@ function Calendar({ value = new Date(), onChange }) {
             onChange(today);
         }
     };
+
+    const handleClickDate = (day) => {
+        const newDate = setDate(value, day);
+        setSelectedDate(newDate); // Set the selected date
+        if (onChange) {
+            onChange(newDate);
+        }
+
+
+    };
+
 
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
@@ -31,10 +44,10 @@ function Calendar({ value = new Date(), onChange }) {
 
     return (
         <>
-            <div className='w-[400px] border'>
+            <div className='w-[400px] border rounded shadow-xl p-2'>
                 <div className='grid grid-cols-7'>
-                    <Cell className='col-span-4 font-bold'>{format(value, "LLLL yyyy")}</Cell>
-                    <Cell className='rounded' onClick={handleSetToday}>{"Today"}</Cell>
+                    <Cell className='col-span-4 font-bold w-44'>{format(value, "LLLL yyyy")}</Cell>
+                    <Cell className='col-span-1' onClick={handleSetToday}>{"Today"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={prevMonth}>{"<"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={nextMonth}>{">"}</Cell>
 
@@ -51,11 +64,19 @@ function Calendar({ value = new Date(), onChange }) {
                     {Array.from({ length: numDays }).map((_, index) => {
                         const date = index + 1;
                         const isCurrentDate = (
-                            date === value.getDate() &&
+                            date === currentDate.getDate() &&
                             value.getMonth() === currentDate.getMonth() &&
                             value.getFullYear() === currentDate.getFullYear()
                         );
-                        return <Cell isActive={isCurrentDate}>{date}</Cell>;
+                        let isSelectedDate = false;
+                        if (selectedDate) {
+                            isSelectedDate = (
+                                date === value.getDate() &&
+                                value.getMonth() === selectedDate.getMonth() &&
+                                value.getFullYear() === selectedDate.getFullYear()
+                            );
+                        }
+                        return <Cell onClick={() => handleClickDate(date)} isActive={isCurrentDate} isSelected={isSelectedDate}>{date}</Cell>;
                     })}
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
