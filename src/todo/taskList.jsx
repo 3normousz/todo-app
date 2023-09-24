@@ -1,18 +1,17 @@
-import { format } from 'date-fns'; // Import format from date-fns
+import List from './List';
 import '../index.css'
 
 function TaskList({ selectedDate, tasks }) {
 
-    console.log(tasks);
     return (
         <>
             <div>
                 {selectedDate && tasks[selectedDate.toISOString().substr(0, 10)] && (
                     <div className='mt-4'>
                         <ul>
-                            {tasks[selectedDate.toISOString().substr(0, 10)].map((task, index) => (
-                                <li key={index}>{task}</li>
-                            ))}
+                            {Array.from({ length: tasks[selectedDate.toISOString().substr(0, 10)].length }).map((_, index) => {
+                                return <List key={index}>{tasks[selectedDate.toISOString().substr(0, 10)][index]}</List>;
+                            })}
                         </ul>
                     </div>
                 )}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { format } from 'date-fns'; // Import format from date-fns
+import { format } from 'date-fns'
 import '../index.css'
-import TaskList from './taskList';
+import TaskList from './taskList'
 
 function ToDoAppBar({ selectedDate }) {
     const [tasks, setTasks] = useState({});
@@ -13,7 +13,6 @@ function ToDoAppBar({ selectedDate }) {
                 ...prevTasks,
                 [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
             }));
-            console.log(tasks);
         }
     };
 
