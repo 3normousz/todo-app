@@ -7,7 +7,7 @@ const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function Calendar({ value = new Date(), onChange }) {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const handleSetToday = () => {
         const today = new Date();
@@ -19,12 +19,10 @@ function Calendar({ value = new Date(), onChange }) {
 
     const handleClickDate = (day) => {
         const newDate = setDate(value, day);
-        setSelectedDate(newDate); // Set the selected date
+        setSelectedDate(newDate);
         if (onChange) {
             onChange(newDate);
         }
-
-
     };
 
 
@@ -78,7 +76,12 @@ function Calendar({ value = new Date(), onChange }) {
                             );
                             isSelectedFlag = true;
                         }
-                        return <Cell onClick={() => handleClickDate(date)} isActive={isCurrentDate} isSelected={isSelectedDate} isSelectedFlag={isSelectedFlag}>{date}</Cell>;
+                        return <Cell onClick={() => handleClickDate(date)}
+                            isEqualsToCurrentDate={isCurrentDate}
+                            isEqualsToSelectedDate={isSelectedDate}
+                            isSelectedFlag={isSelectedFlag}>
+                            {date}
+                        </Cell>;
                     })}
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
