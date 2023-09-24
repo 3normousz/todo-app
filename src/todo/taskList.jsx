@@ -7,7 +7,7 @@ function TaskList({ selectedDate, tasks }) {
         <>
             <div>
                 {selectedDate && tasks[selectedDate.toISOString().substr(0, 10)] && (
-                    <div className='mt-4'>
+                    <div className='mt-6'>
                         <ul>
                             {Array.from({ length: tasks[selectedDate.toISOString().substr(0, 10)].length }).map((_, index) => {
                                 return <List key={index}>{tasks[selectedDate.toISOString().substr(0, 10)][index]}</List>;

@@ -19,24 +19,28 @@ function ToDoAppBar({ selectedDate }) {
     return (
         <>
             <div className="my-4">
-                <h3 className='mt-6 my-6 font-bold text-center'>{format(selectedDate, 'MMMM dd, yyyy')}</h3>
-                {(
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        handleTaskSubmit(e.target.task.value);
-                        e.target.task.value = '';
-                    }}>
-                        <input
-                            type="text"
-                            name="task"
-                            placeholder="Enter a task..."
-                            className="border rounded px-2 py-1"
-                        />
-                        <button type="submit" className="bg-blue-500 text-white px-2 py-1 ml-2 rounded">
-                            Add Task
-                        </button>
-                    </form>
-                )}
+                <h3 className='mt-6 my-6 font-bold text-center'>
+                    {format(selectedDate, 'MMMM dd, yyyy')}
+                </h3>
+                <div className='text-center'>
+                    {(
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            handleTaskSubmit(e.target.task.value);
+                            e.target.task.value = '';
+                        }}>
+                            <input
+                                type="text"
+                                name="task"
+                                placeholder="Enter a task..."
+                                className="border rounded px-2 py-1"
+                            />
+                            <button type="submit" className="bg-blue-500 text-white px-2 py-1 ml-2 rounded">
+                                Add Task
+                            </button>
+                        </form>
+                    )}
+                </div>
                 <TaskList selectedDate={selectedDate} tasks={tasks} />
             </div>
         </>
