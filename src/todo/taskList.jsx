@@ -3,14 +3,18 @@ import '../index.css'
 
 function TaskList({ selectedDate, tasks }) {
 
+    const selectedDateUTC = new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000));
+
+    const selectedDateString = selectedDateUTC.toISOString().substr(0, 10);
+
     return (
         <>
             <div>
-                {selectedDate && tasks[selectedDate.toISOString().substr(0, 10)] && (
+                {selectedDate && tasks[selectedDateString] && (
                     <div className='mt-6'>
                         <ul>
-                            {Array.from({ length: tasks[selectedDate.toISOString().substr(0, 10)].length }).map((_, index) => {
-                                return <List key={index}>{tasks[selectedDate.toISOString().substr(0, 10)][index]}</List>;
+                            {Array.from({ length: tasks[selectedDateString].length }).map((_, index) => {
+                                return <List key={index}>{tasks[selectedDateString][index]}</List>;
                             })}
                         </ul>
                     </div>
@@ -20,4 +24,4 @@ function TaskList({ selectedDate, tasks }) {
     )
 }
 
-export default TaskList
+export default TaskList;
