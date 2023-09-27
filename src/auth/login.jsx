@@ -1,30 +1,29 @@
-import { useRef, useState } from "react";
+import { React, useRef, useState } from 'react'
 import { useAuth } from "./authContext";
+import { useNavigate } from 'react-router-dom'
 import "../index.css"
 
-function SignUp() {
+export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const passwordConfirmationRef = useRef();
-    const { signUp } = useAuth();
+    const { logIn } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     async function handleSummit(e) {
         e.preventDefault();
 
-        if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-            return setError('Passwords do not match');
-        }
         try {
             setError('');
             setLoading(true);
             console.log(emailRef.current.value);
             console.log(passwordRef.current.value);
-            await signUp(emailRef.current.value, passwordRef.current.value);
-            console.log("Signup Success");
+            await logIn(emailRef.current.value, passwordRef.current.value);
+            navigate('/calendar');
+            console.log("Login Success");
         } catch {
-            setError('Failed to create an account');
+            setError('Failed to sign in');
         }
         setLoading(false);
 
@@ -60,24 +59,12 @@ function SignUp() {
                             required
                         />
                     </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="passwordConfirmation">
-                            Password Confirmation
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password-confirmation"
-                            type="password"
-                            placeholder="******************"
-                            ref={passwordConfirmationRef}
-                            required
-                        />
-                    </div>
                     <div className="flex items-center justify-start">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="summit" disabled={loading}>
-                            Sign Up
+                            Login
                         </button>
-                        <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4" href="/">
-                            Already have an account? Log in
+                        <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4" href="/signup">
+                            Need an account? Sign Up
                         </a>
                     </div>
                 </form>
@@ -85,5 +72,3 @@ function SignUp() {
         </>
     )
 }
-
-export default SignUp
