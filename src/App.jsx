@@ -5,7 +5,9 @@ import SignUp from './auth/signup';
 import Login from './auth/login';
 import { AuthProvider } from './auth/authContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './auth/PrivateRoutes';
 import './index.css'
+
 
 
 function App() {
@@ -23,14 +25,17 @@ function App() {
         <Router>
           <AuthProvider>
             <Routes>
-              <Route path='/' element={<Login />} />
+              <Route exact path='/' element={<Login />} />
               <Route path='/signup' element={<SignUp />} />
-              <Route path='/calendar' element={
-                <>
-                  <Calendar value={currentDate} onChange={handleCalendarChange} />
-                  <ToDoAppBar selectedDate={currentSelectedDate} />
-                </>
-              } />
+              <Route element={<PrivateRoute />}>
+                <Route path='/calendar' element={
+                  <>
+                    <Calendar value={currentDate} onChange={handleCalendarChange} />
+                    <ToDoAppBar selectedDate={currentSelectedDate} />
+                  </>
+                } />
+              </Route>
+
             </Routes>
           </AuthProvider>
         </Router>
