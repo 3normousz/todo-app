@@ -5,11 +5,21 @@ import { auth, db } from '../auth/firebase'
 import '../index.css'
 
 import firebase from 'firebase/compat/app'
-import { getDatabase, ref, child, push, update, set } from "firebase/database";
+import { getDatabase, ref, child, push, update, get, set } from "firebase/database";
 import 'firebase/compat/auth';
 
 function ToDoAppBar({ selectedDate }) {
     const [tasks, setTasks] = useState({});
+
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    const user = auth.currentUser;
+    const uid = user.uid;
+
+    useEffect(() => {
+        if (selectedDate) {
+            readUserData(uid, formattedDate);
+        }
+    }, []);
 
     const handleTaskSubmit = (taskText) => {
         if (selectedDate) {
@@ -19,35 +29,38 @@ function ToDoAppBar({ selectedDate }) {
                 [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
             }));
 
-            console.log(tasks);
         }
     };
 
     useEffect(() => {
-        if (selectedDate) {
-            let user = auth.currentUser;
-            let uid = user.uid;
-            const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-
-            // Assuming that you want to call writeUserData whenever tasks change
+        if (selectedDate && Object.keys(tasks).length > 0) {
             writeUserData(uid, tasks);
         }
     }, [selectedDate, tasks]);
 
 
 
-    function writeUserData(userId, tasks) {
+    function writeUserData(userId, newTask) {
         const db = getDatabase();
 
-        // Construct the path to the user's tasks.
-        const userTasksRef = ref(db, `/user/${userId}/tasks`);
-
-        // Push the new tasks to the user's tasks path.
-        const newTaskRef = push(userTasksRef);
-
-        // Set the new task data with a unique key.
-        return set(newTaskRef, tasks);
+        set(ref(db, `/user/${userId}`), {
+            tasks: newTask
+        });
     }
+
+    function readUserData(userId) {
+        const dbRef = ref(getDatabase(), `user/${userId}/tasks/`);
+
+        get(dbRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                setTasks(data);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
 
 
     return (
