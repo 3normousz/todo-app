@@ -66,7 +66,7 @@ function Calendar({ value = new Date(), onChange }) {
                             value.getMonth() === currentDate.getMonth() &&
                             value.getFullYear() === currentDate.getFullYear()
                         );
-                        let isSelectedDate = false;
+                        let isSelectedDate = true;
                         let isSelectedFlag = false;
                         if (selectedDate) {
                             isSelectedDate = (

@@ -1,7 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import '../index.css'
 import TaskList from './taskList'
+import { auth, db } from '../auth/firebase'
+import '../index.css'
+
+import firebase from 'firebase/compat/app'
+import { getDatabase, ref, child, push, update, set } from "firebase/database";
+import 'firebase/compat/auth';
 
 function ToDoAppBar({ selectedDate }) {
     const [tasks, setTasks] = useState({});
@@ -13,8 +18,37 @@ function ToDoAppBar({ selectedDate }) {
                 ...prevTasks,
                 [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
             }));
+
+            console.log(tasks);
         }
     };
+
+    useEffect(() => {
+        if (selectedDate) {
+            let user = auth.currentUser;
+            let uid = user.uid;
+            const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+
+            // Assuming that you want to call writeUserData whenever tasks change
+            writeUserData(uid, tasks);
+        }
+    }, [selectedDate, tasks]);
+
+
+
+    function writeUserData(userId, tasks) {
+        const db = getDatabase();
+
+        // Construct the path to the user's tasks.
+        const userTasksRef = ref(db, `/user/${userId}/tasks`);
+
+        // Push the new tasks to the user's tasks path.
+        const newTaskRef = push(userTasksRef);
+
+        // Set the new task data with a unique key.
+        return set(newTaskRef, tasks);
+    }
+
 
     return (
         <>

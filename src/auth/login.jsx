@@ -17,12 +17,10 @@ export default function Login() {
         try {
             setError('');
             setLoading(true);
-            console.log(emailRef.current.value);
-            console.log(passwordRef.current.value);
             await logIn(emailRef.current.value, passwordRef.current.value);
             navigate('/calendar');
-            console.log("Login Success");
-        } catch {
+        } catch (error) {
+            console.log(error);
             setError('Failed to sign in');
         }
         setLoading(false);

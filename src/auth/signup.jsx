@@ -19,8 +19,6 @@ function SignUp() {
         try {
             setError('');
             setLoading(true);
-            console.log(emailRef.current.value);
-            console.log(passwordRef.current.value);
             await signUp(emailRef.current.value, passwordRef.current.value);
             console.log("Signup Success");
         } catch {
