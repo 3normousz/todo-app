@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useAuth } from "./authContext";
+import InputField from "../loginComponents/inputField";
 import "../index.css"
 
 function SignUp() {
@@ -35,46 +36,37 @@ function SignUp() {
                         <span className="block sm:inline">{error}</span>
                     </div>}
                     <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="email">
-                            Email
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="email"
+                        <InputField
+                            label="Email"
                             type="email"
                             placeholder="Email"
-                            ref={emailRef}
-                            required
-                        />
-                    </div>
-                    <div className="mb-2">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="password">
-                            Password
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password"
-                            type="password"
-                            placeholder="******************"
-                            ref={passwordRef}
+                            refProp={emailRef}
                             required
                         />
                     </div>
                     <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" for="passwordConfirmation">
-                            Password Confirmation
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password-confirmation"
+                        <InputField
+                            label="Password"
                             type="password"
-                            placeholder="******************"
-                            ref={passwordConfirmationRef}
+                            placeholder="******"
+                            refProp={passwordRef}
                             required
                         />
                     </div>
-                    <div className="flex items-center justify-start">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="summit" disabled={loading}>
+                    <div className="mb-6">
+                        <InputField
+                            label="Password Confirmation"
+                            type="password"
+                            placeholder="******"
+                            refProp={passwordConfirmationRef}
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-col items-center mt-6">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 mt-4 rounded focus:outline-none focus:shadow-outline" type="submit" disabled={loading}>
                             Sign Up
                         </button>
-                        <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 ml-4" href="/">
+                        <a className="inline-block mt-4 font-bold text-sm text-blue-500 hover:text-blue-800" href="/">
                             Already have an account? Log in
                         </a>
                     </div>

@@ -12,28 +12,31 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const auth = getAuth();
 
-    function signUp(email, password) {
-        createUserWithEmailAndPassword(auth, email, password)
-            .catch((error) => {
-                console.log(error);
-            });
+    async function signUp(email, password) {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.log(error);
+            throw error; // Rethrow the error to handle it in the calling component
+        }
     }
 
-    function logIn(email, password) {
-        signInWithEmailAndPassword(auth, email, password)
-            .catch((error) => {
-                console.log(error);
-            });
+    async function logIn(email, password) {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.log(error);
+            throw error; // Rethrow the error to handle it in the calling component
+        }
     }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setLoading(false);
-        })
+        });
 
-        return unsubscribe
-    }, [])
+    }, [auth]);
 
 
     const value = {
