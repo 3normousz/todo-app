@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Calendar from "./calendar/calendar"
+import Calendar from "./calendar/TaskCalendar"
 import ToDoAppBar from "./todo/toDoAddBar"
 import SignUp from './auth/signup';
 import Login from './auth/login';
