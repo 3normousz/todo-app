@@ -1,6 +1,6 @@
-import { React, useRef, useState } from 'react'
+import { React, useRef, useState, useEffect } from 'react'
 import { useAuth } from "./authContext";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import InputField from "../loginComponents/inputField";
 import "../index.css"
 
@@ -11,28 +11,40 @@ export default function Login() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const [signedUpSuccessValue, setSignedUpSuccessValue] = useState(0);
 
     async function handleSummit(e) {
         e.preventDefault();
 
         try {
             setError('');
+            setSignedUpSuccessValue(0);
             setLoading(true);
             await logIn(emailRef.current.value, passwordRef.current.value);
             navigate('/calendar');
-        } catch (error) {
-            console.log(error);
+        } catch {
             setError('Failed to sign in');
         }
         setLoading(false);
 
     }
+
+    useEffect(() => {
+        if (location.state && location.state.value) {
+            setSignedUpSuccessValue(location.state.value);
+        }
+    }, [location]);
+
     return (
         <>
             <div className="w-full max-w-xs">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSummit}>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2" role="alert">
                         <span className="block sm:inline">{error}</span>
+                    </div>}
+                    {signedUpSuccessValue === 1 && <div className="bg-teal-100 border border-teal-500 text-teal-900 px-4 py-3 rounded relative mb-2" role="alert">
+                        <span className="block sm:inline">Account Successfully Created ! </span>
                     </div>}
                     <div className="mb-6">
                         <InputField

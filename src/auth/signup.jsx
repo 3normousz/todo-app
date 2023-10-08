@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useAuth } from "./authContext";
+import { useNavigate } from 'react-router-dom'
 import InputField from "../loginComponents/inputField";
 import "../index.css"
 
@@ -10,6 +11,7 @@ function SignUp() {
     const { signUp } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     async function handleSummit(e) {
         e.preventDefault();
@@ -21,7 +23,7 @@ function SignUp() {
             setError('');
             setLoading(true);
             await signUp(emailRef.current.value, passwordRef.current.value);
-            console.log("Signup Success");
+            navigate('/', { state: { value: 1 } });
         } catch {
             setError('Failed to create an account');
         }
