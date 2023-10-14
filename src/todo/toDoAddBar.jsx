@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import TaskList from './taskList'
-import { auth, db } from '../auth/firebase'
+import { auth } from '../auth/firebase'
 import '../index.css'
 
-import firebase from 'firebase/compat/app'
-import { getDatabase, ref, child, push, update, get, set } from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
 import 'firebase/compat/auth';
 
 function ToDoAppBar({ selectedDate }) {
@@ -31,6 +30,17 @@ function ToDoAppBar({ selectedDate }) {
 
         }
     };
+
+    const handleDeleteTask = (date, taskIndex) => {
+        const updatedTasks = { ...tasks };
+
+        if (updatedTasks[date]) {
+            updatedTasks[date] = updatedTasks[date].filter((_, index) => index !== taskIndex);
+        }
+
+        setTasks(updatedTasks);
+    };
+
 
     useEffect(() => {
         if (selectedDate && Object.keys(tasks).length > 0) {
@@ -81,14 +91,15 @@ function ToDoAppBar({ selectedDate }) {
                                 name="task"
                                 placeholder="Enter a task..."
                                 className="border rounded px-2 py-1"
+                                required
                             />
-                            <button type="submit" className="bg-blue-500 text-white px-2 py-1 ml-2 rounded">
+                            <button type="submit" className="bg-blue-500 text-white font-bold px-2 py-1 ml-2 rounded">
                                 Add Task
                             </button>
                         </form>
                     )}
                 </div>
-                <TaskList selectedDate={selectedDate} tasks={tasks} />
+                <TaskList selectedDate={selectedDate} tasks={tasks} onDeleteTask={handleDeleteTask} />
             </div>
         </>
     )

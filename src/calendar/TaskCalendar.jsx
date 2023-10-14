@@ -19,6 +19,7 @@ function Calendar({ value = new Date(), onChange }) {
 
     const handleClickDate = (day) => {
         const newDate = setDate(value, day);
+        console.log(newDate, day);
         setSelectedDate(newDate);
         if (onChange) {
             onChange(newDate);
@@ -86,7 +87,7 @@ function Calendar({ value = new Date(), onChange }) {
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
                         const date = index + 1;
-                        return <Cell className='text-neutral-300'>{date}</Cell>;
+                        return <Cell onClick={() => { handleClickDate(date); nextMonth(); }} className='text-neutral-300'>{date}</Cell>;
                     })}
                 </div>
             </div>
