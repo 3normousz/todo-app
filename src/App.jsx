@@ -14,8 +14,10 @@ function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentSelectedDate, setCurrentSelectedDate] = useState(new Date());
 
-  const handleCalendarChange = (newDate) => {
+  const handleCurrentDateChange = (newDate) => {
     setCurrentDate(newDate);
+  };
+  const handleCurrentSelectedDateChange = (newDate) => {
     setCurrentSelectedDate(newDate);
   };
 
@@ -30,7 +32,7 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path='/calendar' element={
                   <>
-                    <Calendar value={currentDate} onChange={handleCalendarChange} />
+                    <Calendar displayMonthValue={currentDate} currentDateOnChange={handleCurrentDateChange} currentSelectedDateOnChange={handleCurrentSelectedDateChange} />
                     <ToDoAppBar selectedDate={currentSelectedDate} />
                   </>
                 } />

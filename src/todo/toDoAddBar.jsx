@@ -71,8 +71,6 @@ function ToDoAppBar({ selectedDate }) {
         });
     }
 
-
-
     return (
         <>
             <div className="my-4">
