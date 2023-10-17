@@ -67,19 +67,19 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
         <>
             <div className='w-[400px] border rounded shadow-xl p-2'>
                 <div className='grid grid-cols-7'>
-                    <Cell className='col-span-4 font-bold w-44'>{format(displayMonthValue, "LLLL yyyy")}</Cell>
+                    <Cell className='col-span-4 font-bold w-44' isClickable={false}>{format(displayMonthValue, "LLLL yyyy")}</Cell>
                     <Cell className='col-span-1' onClick={handleSetToday}>{"Today"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={prevMonth}>{"<"}</Cell>
                     <Cell className='col-span-1 font-bold' onClick={nextMonth}>{">"}</Cell>
 
                     {daysOfWeek.map((day) => (
-                        <Cell key={day} className="text-sm font-bold">
+                        <Cell key={day} className="text-sm font-bold" isClickable={false}>
                             {day}
                         </Cell>))}
 
                     {Array.from({ length: prefixDays }).map((_, index) => {
                         const date = numPrevMonthDays - prefixDays + index + 1;
-                        return <Cell className='text-neutral-300'>{date}</Cell>;
+                        return <Cell key={date} className='text-neutral-300'>{date}</Cell>;
                     })}
 
                     {Array.from({ length: numDays }).map((_, index) => {
@@ -99,7 +99,8 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                             );
                             isSelectedFlag = true;
                         }
-                        return <Cell onClick={() => handleClickDate(date, false)}
+                        return <Cell key={date}
+                            onClick={() => handleClickDate(date, false)}
                             isEqualsToCurrentDate={isCurrentDate}
                             isEqualsToSelectedDate={isSelectedDate}
                             isSelectedFlag={isSelectedFlag}>
@@ -109,7 +110,9 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
                         const date = index + 1;
-                        return <Cell onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>{date}</Cell>;
+                        return <Cell key={date}
+                            onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>{date}
+                        </Cell>;
                     })}
                 </div>
             </div>
