@@ -106,8 +106,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                                 onClick={() => handleClickDate(date, false)}
                                 isEqualsToCurrentDate={isCurrentDate}
                                 isEqualsToSelectedDate={isSelectedDate}
-                                isSelectedFlag={isSelectedFlag}
-                            >
+                                isSelectedFlag={isSelectedFlag} >
                                 {date}
                             </Cell>
                         );
@@ -116,11 +115,37 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                             const start = 6;
                             const end = 0;
                             const dotCellCount = start - end + 1;
-
                             const dotCells = [];
+                            if (prefixDays > 0 && index + prefixDays === 7) {
+                                const daysFromPreviousMonth = prefixDays;
+                                let dotDateKeyValue;
+                                for (let i = daysFromPreviousMonth - 1; i >= 0; i--) {
+                                    const currentIndex = end + i;
+
+                                    const dotDate = format(setDate(displayMonthValue, end + currentIndex), 'yyyy-MM-dd');
+                                    dotDateKeyValue = format(setDate(displayMonthValue, end + currentIndex), 'MM');
+
+                                    const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
+                                    const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
+
+                                    dotCells.push(
+                                        <Cell key={`dot-${date}-${i}-${dotDateKeyValue}`} className={`${dotCellClass} place-self-center`} isDotCell={true}>
+                                        </Cell>
+                                    );
+                                }
+                                for (let i = daysFromPreviousMonth - 7; i < 0; i++) {
+                                    dotCells.push(
+                                        <Cell key={`dot-${date}-${i}-${dotDateKeyValue}`} className={`dot-white place-self-center`} isDotCell={true}>
+                                        </Cell>
+                                    );
+                                }
+                            }
                             for (let i = 0; i < dotCellCount; i++) {
                                 const currentIndex = start - i;
+
                                 const dotDate = format(setDate(displayMonthValue, index - currentIndex), 'yyyy-MM-dd');
+                                // console.log(dotDate);
+
                                 const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
                                 const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
 
@@ -144,25 +169,42 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                         const dateCell = (
                             <Cell
                                 key={date}
-                                onClick={() => handleClickDate(date, true)} >
+                                onClick={() => handleClickDate(date, true)}
+                                className='text-neutral-300' >
                                 {date}
                             </Cell>
                         );
 
-                        const dotCell = (
-                            <Cell key={`dot-${date}`} className='dot place-self-center'>
-                                { }
-                            </Cell>
-                        );
-
                         if (date == suffixDays) {
-                            const dotCells = Array.from({ length: 7 }, (_, i) => (
-                                <Cell key={`dot-${date}-${i}`}>{dotCell}</Cell>
-                            ));
+                            const start = endDate.getDate();
+                            const end = endDate.getDate() - index;
+                            const dotCellCount = start - end + 1;
+                            // console.log('dotCellCount is => ' + dotCellCount);
+                            // console.log('dotCellCount + suffixDays is => ' + (dotCellCount + temp));
+                            const dotCells = [];
+                            for (let i = 1; i < (dotCellCount + suffixDays) - 1; i++) {
+                                const currentIndex = end + i;
+                                // console.log(endDate.getDate(), suffixDays, index);
+
+                                const dotDate = format(setDate(displayMonthValue, currentIndex), 'yyyy-MM-dd');
+
+                                const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
+                                const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
+
+                                // console.log(dotDate);
+                                // if (hasTasks)
+                                //    console.log('hasTasks at => ' + dotDate);
+
+                                dotCells.push(
+                                    <Cell key={`dot-${date}-${i}`} className={`${dotCellClass} place-self-center`} isDotCell={true}></Cell>
+                                );
+                            }
                             return [dateCell, dotCells];
                         }
-                        return <Cell key={date}
-                            onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>{date}
+                        return <Cell
+                            key={date}
+                            onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>
+                            {date}
                         </Cell>;
                     })}
                 </div>
