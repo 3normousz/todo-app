@@ -8,6 +8,7 @@ const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Calendar({ displayMonthValue = new Date(), currentDateOnChange, currentSelectedDateOnChange, tasks }) {
     const [displayDate, setDisplayDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [beforeLastGridDate, setBeforeLastGridDate] = useState(null);
 
     const today = new Date();
 
@@ -19,6 +20,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
             currentDateOnChange(today);
             currentSelectedDateOnChange(today);
         }
+        setBeforeLastGridDate(null);
     };
 
     const handleClickDate = (day, isSuffix) => {
@@ -53,6 +55,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
         if (currentDateOnChange) {
             currentDateOnChange(newMonthDate);
         }
+        setBeforeLastGridDate(null);
     };
 
     const prevMonth = () => changeMonth(-1);
@@ -127,7 +130,6 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
 
                                     const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
                                     const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
-
                                     dotCells.push(
                                         <Cell key={`dot-${date}-${i}-${dotDateKeyValue}`} className={`${dotCellClass} place-self-center`} isDotCell={true}>
                                         </Cell>
@@ -148,6 +150,10 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
 
                                 const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
                                 const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
+
+                                if (i == dotCellCount - 1 && !beforeLastGridDate) {
+                                    setBeforeLastGridDate(dotDate);
+                                }
 
                                 dotCells.push(
                                     <Cell key={`dot-${date}-${i}`} className={`${dotCellClass} place-self-center`} isDotCell={true}>
@@ -175,25 +181,19 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                             </Cell>
                         );
 
-                        if (date == suffixDays) {
-                            const start = endDate.getDate();
-                            const end = endDate.getDate() - index;
-                            const dotCellCount = start - end + 1;
-                            // console.log('dotCellCount is => ' + dotCellCount);
-                            // console.log('dotCellCount + suffixDays is => ' + (dotCellCount + temp));
+                        if (date == suffixDays && beforeLastGridDate) {
+                            const start = beforeLastGridDate.substr(8, 2);
+                            const end = endDate.getDate();
+                            const dotCellCount = end - start;
+
                             const dotCells = [];
-                            for (let i = 1; i < (dotCellCount + suffixDays) - 1; i++) {
-                                const currentIndex = end + i;
-                                // console.log(endDate.getDate(), suffixDays, index);
+                            for (let i = 1; i <= dotCellCount + suffixDays; i++) {
+                                const currentIndex = parseInt(beforeLastGridDate.substr(8, 2)) + i;
 
                                 const dotDate = format(setDate(displayMonthValue, currentIndex), 'yyyy-MM-dd');
 
                                 const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
                                 const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
-
-                                // console.log(dotDate);
-                                // if (hasTasks)
-                                //    console.log('hasTasks at => ' + dotDate);
 
                                 dotCells.push(
                                     <Cell key={`dot-${date}-${i}`} className={`${dotCellClass} place-self-center`} isDotCell={true}></Cell>
