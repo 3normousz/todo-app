@@ -7,7 +7,7 @@ import '../index.css'
 import { getDatabase, ref, get, set } from "firebase/database";
 import 'firebase/compat/auth';
 
-function ToDoAppBar({ selectedDate }) {
+function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
     const [tasks, setTasks] = useState({});
 
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
@@ -27,7 +27,10 @@ function ToDoAppBar({ selectedDate }) {
                 ...prevTasks,
                 [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
             }));
-
+            tasksUpdateDotDisplay((prevTasks) => ({
+                ...prevTasks,
+                [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
+            }));
         }
     };
 
@@ -39,6 +42,7 @@ function ToDoAppBar({ selectedDate }) {
         }
 
         setTasks(updatedTasks);
+        tasksUpdateDotDisplay(tasks);
     };
 
 
@@ -65,6 +69,7 @@ function ToDoAppBar({ selectedDate }) {
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 setTasks(data);
+                tasksUpdateDotDisplay(data);
             }
         }).catch((error) => {
             console.error(error);

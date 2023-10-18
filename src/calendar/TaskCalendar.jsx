@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { startOfMonth, endOfMonth, differenceInDays, sub, format, add, setDate, addMonths, set } from 'date-fns'
+import { startOfMonth, endOfMonth, differenceInDays, sub, format, add, setDate, addMonths } from 'date-fns'
 import Cell from './Cell'
 import '../index.css'
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function Calendar({ displayMonthValue = new Date(), currentDateOnChange, currentSelectedDateOnChange }) {
+function Calendar({ displayMonthValue = new Date(), currentDateOnChange, currentSelectedDateOnChange, tasks }) {
     const [displayDate, setDisplayDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -99,17 +99,68 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                             );
                             isSelectedFlag = true;
                         }
-                        return <Cell key={date}
-                            onClick={() => handleClickDate(date, false)}
-                            isEqualsToCurrentDate={isCurrentDate}
-                            isEqualsToSelectedDate={isSelectedDate}
-                            isSelectedFlag={isSelectedFlag}>
-                            {date}
-                        </Cell>;
+
+                        const dateCell = (
+                            <Cell
+                                key={date}
+                                onClick={() => handleClickDate(date, false)}
+                                isEqualsToCurrentDate={isCurrentDate}
+                                isEqualsToSelectedDate={isSelectedDate}
+                                isSelectedFlag={isSelectedFlag}
+                            >
+                                {date}
+                            </Cell>
+                        );
+
+                        if ((index + prefixDays) % 7 === 0 && index !== 0) {
+                            const start = 6;
+                            const end = 0;
+                            const dotCellCount = start - end + 1;
+
+                            const dotCells = [];
+                            for (let i = 0; i < dotCellCount; i++) {
+                                const currentIndex = start - i;
+                                const dotDate = format(setDate(displayMonthValue, index - currentIndex), 'yyyy-MM-dd');
+                                const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
+                                const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
+
+                                dotCells.push(
+                                    <Cell key={`dot-${date}-${i}`} className={`${dotCellClass} place-self-center`} isDotCell={true}>
+                                    </Cell>
+                                );
+                            }
+                            return [dotCells, dateCell];
+                        }
+
+
+                        return dateCell;
                     })}
+
+
 
                     {Array.from({ length: suffixDays }).map((_, index) => {
                         const date = index + 1;
+
+                        const dateCell = (
+                            <Cell
+                                key={date}
+                                onClick={() => handleClickDate(date, true)} >
+                                {date}
+                            </Cell>
+                        );
+
+                        const dotCell = (
+                            <Cell key={`dot-${date}`} className='dot place-self-center'>
+                                { }
+                            </Cell>
+                        );
+
+                        if (date == suffixDays) {
+                            const dotCells = Array.from({ length: 7 }, (_, i) => (
+                                <Cell key={`dot-${date}-${i}`}>{dotCell}</Cell>
+                            ));
+                            return [dateCell, dotCells];
+                        }
                         return <Cell key={date}
                             onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>{date}
                         </Cell>;

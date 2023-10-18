@@ -13,6 +13,7 @@ import './index.css'
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentSelectedDate, setCurrentSelectedDate] = useState(new Date());
+  const [tasksForDotDisplay, setTasksForDotDisplay] = useState({});
 
   const handleCurrentDateChange = (newDate) => {
     setCurrentDate(newDate);
@@ -20,6 +21,9 @@ function App() {
   const handleCurrentSelectedDateChange = (newDate) => {
     setCurrentSelectedDate(newDate);
   };
+  const handleSetTasksForDotDisplay = (tasks) => {
+    setTasksForDotDisplay(tasks);
+  }
 
   return (
     <>
@@ -32,12 +36,16 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path='/calendar' element={
                   <>
-                    <Calendar displayMonthValue={currentDate} currentDateOnChange={handleCurrentDateChange} currentSelectedDateOnChange={handleCurrentSelectedDateChange} />
-                    <ToDoAppBar selectedDate={currentSelectedDate} />
+                    <Calendar
+                      displayMonthValue={currentDate}
+                      currentDateOnChange={handleCurrentDateChange}
+                      currentSelectedDateOnChange={handleCurrentSelectedDateChange}
+                      tasks={tasksForDotDisplay} />
+                    <ToDoAppBar selectedDate={currentSelectedDate} tasksUpdateDotDisplay={handleSetTasksForDotDisplay} />
                   </>
-                } />
+                }
+                />
               </Route>
-
             </Routes>
           </AuthProvider>
         </Router>
