@@ -5,7 +5,6 @@ import { auth } from '../auth/firebase'
 import '../index.css'
 
 import { getDatabase, ref, get, set } from "firebase/database";
-import 'firebase/compat/auth';
 
 function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
     const [tasks, setTasks] = useState({});

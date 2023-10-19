@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { startOfMonth, endOfMonth, differenceInDays, sub, format, add, setDate, addMonths } from 'date-fns'
+import { startOfMonth, endOfMonth, differenceInDays, sub, format, add, setDate, addMonths, subMonths } from 'date-fns'
 import Cell from './Cell'
 import '../index.css'
 
@@ -26,16 +26,21 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
     const handleClickDate = (day, isSuffix) => {
         let newDate;
 
-        if (isSuffix) {
+        if (isSuffix == 1) {
             newDate = addMonths(displayMonthValue, 1);
+            newDate.setDate(day);
+        } else if (isSuffix == -1) {
+            newDate = subMonths(displayMonthValue, 1);
             newDate.setDate(day);
         } else {
             newDate = setDate(displayMonthValue, day);
         }
 
         setSelectedDate(newDate);
-        if (isSuffix) {
+        if (isSuffix == 1) {
             nextMonth();
+        } else if (isSuffix == -1) {
+            prevMonth();
         }
         if (currentSelectedDateOnChange) {
             currentSelectedDateOnChange(newDate);
@@ -82,7 +87,10 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
 
                     {Array.from({ length: prefixDays }).map((_, index) => {
                         const date = numPrevMonthDays - prefixDays + index + 1;
-                        return <Cell key={date} className='text-neutral-300'>{date}</Cell>;
+                        return <Cell key={date}
+                            onClick={() => { handleClickDate(date, -1); }} className='text-neutral-300'>
+                            {date}
+                        </Cell>;
                     })}
 
                     {Array.from({ length: numDays }).map((_, index) => {
@@ -106,7 +114,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                         const dateCell = (
                             <Cell
                                 key={date}
-                                onClick={() => handleClickDate(date, false)}
+                                onClick={() => handleClickDate(date, 0)}
                                 isEqualsToCurrentDate={isCurrentDate}
                                 isEqualsToSelectedDate={isSelectedDate}
                                 isSelectedFlag={isSelectedFlag} >
@@ -146,7 +154,6 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                                 const currentIndex = start - i;
 
                                 const dotDate = format(setDate(displayMonthValue, index - currentIndex), 'yyyy-MM-dd');
-                                // console.log(dotDate);
 
                                 const hasTasks = tasks[dotDate] && tasks[dotDate].length > 0;
                                 const dotCellClass = hasTasks ? 'dot-red' : 'dot-white';
@@ -203,7 +210,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                         }
                         return <Cell
                             key={date}
-                            onClick={() => { handleClickDate(date, true); }} className='text-neutral-300'>
+                            onClick={() => { handleClickDate(date, 1); }} className='text-neutral-300'>
                             {date}
                         </Cell>;
                     })}
