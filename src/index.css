@@ -17,3 +17,41 @@
     border-radius: 14px;
     background-color: whtie;
 }
+
+.dateCellCustomHover {
+    font-style: none;
+    text-decoration: none;
+    position: relative;
+}
+
+.dateCellCustomHover:hover::after {
+    z-index: -1;
+    background-color: rgb(212 212 216);
+    content: '';
+    width: 93%;
+    height: 93%;
+    position: absolute;
+    display: inline-block;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dateCellSelectedBackgroundCustomColor {
+    position: relative;
+}
+
+.dateCellSelectedBackgroundCustomColor::after {
+    z-index: -1;
+    background-color: rgb(59 130 246);
+    content: '';
+    width: 93%;
+    height: 93%;
+    position: absolute;
+    display: inline-block;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
