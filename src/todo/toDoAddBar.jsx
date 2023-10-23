@@ -24,11 +24,23 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
             const formattedDate = format(selectedDate, 'yyyy-MM-dd');
             setTasks((prevTasks) => ({
                 ...prevTasks,
-                [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
+                [formattedDate]: [
+                    ...(prevTasks[formattedDate] || []),
+                    {
+                        task: taskText,
+                        isCleared: false
+                    },
+                ],
             }));
             tasksUpdateDotDisplay((prevTasks) => ({
                 ...prevTasks,
-                [formattedDate]: [...(prevTasks[formattedDate] || []), taskText],
+                [formattedDate]: [
+                    ...(prevTasks[formattedDate] || []),
+                    {
+                        task: taskText,
+                        isCleared: false
+                    },
+                ],
             }));
         }
     };
@@ -56,6 +68,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
     function writeUserData(userId, newTask) {
         const db = getDatabase();
 
+
         set(ref(db, `/user/${userId}`), {
             tasks: newTask
         });
@@ -73,6 +86,10 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
         }).catch((error) => {
             console.error(error);
         });
+    }
+
+    const handleClearedTaskUpdate = (newTasks) => {
+        setTasks(newTasks);
     }
 
     return (
@@ -101,7 +118,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
                         </form>
                     )}
                 </div>
-                <TaskList selectedDate={selectedDate} tasks={tasks} onDeleteTask={handleDeleteTask} />
+                <TaskList selectedDate={selectedDate} tasks={tasks} onDeleteTask={handleDeleteTask} checkClearedTaskUpdate={handleClearedTaskUpdate} />
             </div>
         </>
     )
