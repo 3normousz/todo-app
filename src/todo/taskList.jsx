@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import List from './List';
 import '../index.css'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate }) {
     const selectedDateUTC = new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000));
@@ -35,8 +35,8 @@ function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate })
                                     </span>
                                     <button
                                         onClick={() => onDeleteTask(selectedDateString, index)}
-                                        className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
-                                        Remove
+                                        className='text-neutral-500'>
+                                        <DeleteIcon fontSize="small" />
                                     </button>
                                 </div>
                             </List>

@@ -18,6 +18,28 @@
     background-color: whtie;
 }
 
+.dateCellWithDot::before {
+    z-index: 0;
+    content: '';
+    background-color: #FFFBFF;
+    width: 6px;
+    height: 6px;
+    margin-top: 35px;
+    border-radius: 14px;
+    position: absolute;
+}
+
+.dateCellWithNoDot::before {
+    z-index: -1;
+    content: '';
+    background-color: rgb(163 163 163);
+    width: 6px;
+    height: 6px;
+    margin-top: 40px;
+    border-radius: 14px;
+    position: absolute;
+}
+
 .dateCellCustomHover {
     font-style: none;
     text-decoration: none;
@@ -44,7 +66,8 @@
 
 .dateCellSelectedBackgroundCustomColor::after {
     z-index: -1;
-    background-color: rgb(59 130 246);
+    background-color: rgb(115 115 115);
+    ;
     content: '';
     width: 93%;
     height: 93%;
@@ -54,4 +77,78 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.task-input-style {
+    position: relative;
+    margin-top: 2rem;
+}
+
+.task-input-style input {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #222222;
+    border-bottom: 2px solid silver;
+}
+
+.task-input-style label {
+    color: rgb(168 162 158);
+    position: absolute;
+    pointer-events: none;
+    left: 0%;
+    transition: all 0.3s ease;
+}
+
+.task-input-style input:focus~label,
+.task-input-style input:valid~label {
+    color: white;
+    transform: translateY(-25px);
+}
+
+.underline {
+    text-align: left;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0px;
+}
+
+.underline::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: all 0.3s linear;
+}
+
+.task-input-style input:focus~.underline::before,
+.task-input-style input:valid~.underline::before {
+    transform: scaleX(1);
+}
+
+.time-input-style {
+    position: relative;
+    width: 50%;
+}
+
+.time-input-style input {
+    background-color: #222222;
+    padding: 5px;
+    left: 50%;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.time-input-style input::-webkit-calendar-picker-indicator {
+    background-color: #ffffff;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
 }

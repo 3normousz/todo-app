@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import TaskList from './taskList'
-import { auth } from '../auth/firebase'
-import '../index.css'
 
+import '../index.css'
+import AddIcon from '@mui/icons-material/Add';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PlaceIcon from '@mui/icons-material/Place';
+
+import { auth } from '../auth/firebase'
 import { getDatabase, ref, get, set } from "firebase/database";
 
 function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
     const [tasks, setTasks] = useState({});
+
+    const textInput = useRef(null);
 
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
     const user = auth.currentUser;
@@ -53,7 +59,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
         }
 
         setTasks(updatedTasks);
-        tasksUpdateDotDisplay(tasks);
+        tasksUpdateDotDisplay(updatedTasks);
     };
 
 
@@ -92,31 +98,43 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
         setTasks(newTasks);
     }
 
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        handleTaskSubmit(textInput.current.value);
+
+        textInput.current.value = '';
+    };
+
     return (
         <>
             <div className="my-4">
-                <h3 className='mt-6 my-6 font-bold text-center'>
+                <h3 className='mt-6 my-6 font-bold text-center text-white'>
                     {format(selectedDate, 'MMMM dd, yyyy')}
                 </h3>
                 <div className='text-center'>
-                    {(
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            handleTaskSubmit(e.target.task.value);
-                            e.target.task.value = '';
-                        }}>
-                            <input
-                                type="text"
-                                name="task"
-                                placeholder="Enter a task..."
-                                className="border rounded px-2 py-1"
-                                required
-                            />
-                            <button type="submit" className="bg-blue-500 text-white font-bold px-2 py-1 ml-2 rounded">
-                                Add Task
-                            </button>
-                        </form>
-                    )}
+                    <form onSubmit={handleFormSubmit}>
+                        <div className='flex flex-col'>
+                            <div>
+                                <div class="task-input-style">
+                                    <input type="text" className='' ref={textInput} placeholder="" required />
+                                    <label className='text-clip'>Add a task</label>
+                                    <div className="underline"></div>
+                                </div>
+                                <div className='flex'>
+                                    <div className='mt-4 time-input-style'>
+                                        <input type="time" className='' placeholder="" required />
+                                    </div>
+                                    <div className='mt-4 time-input-style'>
+                                        <input type="time" className='' placeholder="" required />
+                                    </div>
+                                </div>
+                                <button type="submit" className="mt-4 text-neutral-400 font-bold px-2 py-1 ml-2 rounded-full">
+                                    <AddIcon />
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <TaskList selectedDate={selectedDate} tasks={tasks} onDeleteTask={handleDeleteTask} checkClearedTaskUpdate={handleClearedTaskUpdate} />
             </div>
