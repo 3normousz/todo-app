@@ -1,6 +1,7 @@
 import List from './List';
 import '../index.css'
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import { TrashSimple } from '@phosphor-icons/react';
 
 function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate }) {
     const selectedDateUTC = new Date(selectedDate.getTime() - (selectedDate.getTimezoneOffset() * 60000));
@@ -36,7 +37,7 @@ function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate })
                                     <button
                                         onClick={() => onDeleteTask(selectedDateString, index)}
                                         className='text-neutral-500'>
-                                        <DeleteIcon fontSize="small" />
+                                        <TrashSimple color='white' size={16} />
                                     </button>
                                 </div>
                             </List>
