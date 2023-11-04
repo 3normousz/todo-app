@@ -3,9 +3,7 @@ import { format } from 'date-fns'
 import TaskList from './taskList'
 
 import '../index.css'
-import AddIcon from '@mui/icons-material/Add';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PlaceIcon from '@mui/icons-material/Place';
+import { Clock, Plus } from "@phosphor-icons/react";
 
 import { auth } from '../auth/firebase'
 import { getDatabase, ref, get, set } from "firebase/database";
@@ -116,21 +114,19 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
                     <form onSubmit={handleFormSubmit}>
                         <div className='flex flex-col'>
                             <div>
-                                <div class="task-input-style">
+                                <div className="task-input-style">
                                     <input type="text" className='' ref={textInput} placeholder="" required />
                                     <label className='text-clip'>Add a task</label>
                                     <div className="underline"></div>
                                 </div>
-                                <div className='flex'>
-                                    <div className='mt-4 time-input-style'>
+                                <div className='flex mt-4'>
+                                    <div className='time-input-style'>
                                         <input type="time" className='' placeholder="" required />
-                                    </div>
-                                    <div className='mt-4 time-input-style'>
-                                        <input type="time" className='' placeholder="" required />
+                                        <Clock className='clock-icon' size={16} weight='bold' />
                                     </div>
                                 </div>
                                 <button type="submit" className="mt-4 text-neutral-400 font-bold px-2 py-1 ml-2 rounded-full">
-                                    <AddIcon />
+                                    <Plus />
                                 </button>
                             </div>
                         </div>

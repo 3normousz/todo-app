@@ -77,7 +77,7 @@ function Calendar({ displayMonthValue = new Date(), currentDateOnChange, current
                 <style>{'body { background-color: #222222; }'}</style>
                 <link rel="canonical" href="http://mysite.com/example" />
             </Helmet>
-            <div className='w-[400px] rounded shadow-xl p-2 bg-neutral-400'>
+            <div className='w-[350px] md:w-[400px] rounded shadow-xl p-2 bg-neutral-400'>
                 <div className='grid grid-cols-7'>
                     <Cell className='col-span-4 font-bold w-44' isClickable={false}>{format(displayMonthValue, "LLLL yyyy")}</Cell>
                     <Cell className='col-span-1' onClick={handleSetToday}>{"Today"}</Cell>

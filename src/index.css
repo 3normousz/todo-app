@@ -67,7 +67,6 @@
 .dateCellSelectedBackgroundCustomColor::after {
     z-index: -1;
     background-color: rgb(115 115 115);
-    ;
     content: '';
     width: 93%;
     height: 93%;
@@ -144,11 +143,25 @@
     border: none;
     outline: none;
     border-radius: 5px;
+    position: relative;
+    /* Ensure a positioned parent for absolute positioning */
 }
 
 .time-input-style input::-webkit-calendar-picker-indicator {
-    background-color: #ffffff;
+    display: block;
     padding: 5px;
     cursor: pointer;
+}
+
+.clock-icon {
+    position: absolute;
+    background-color: white;
     border-radius: 3px;
+    width: 27px;
+    height: 27px;
+    top: 50%;
+    right: 0px;
+    padding: 4px;
+    transform: translate(66.5px, -50%);
+    pointer-events: none;
 }
