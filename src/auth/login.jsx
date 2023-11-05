@@ -39,7 +39,7 @@ export default function Login() {
     return (
         <>
             <div className="w-full max-w-xs">
-                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSummit}>
+                <form className="bg-neutral-400 shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSummit}>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2" role="alert">
                         <span className="block sm:inline">{error}</span>
                     </div>}
@@ -65,10 +65,10 @@ export default function Login() {
                         />
                     </div>
                     <div className="flex flex-col items-center mt-6">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 mt-4 rounded focus:outline-none focus:shadow-outline" type="submit" disabled={loading}>
+                        <button className="bg-white hover:bg-neutral-500 text-black font-bold py-2 px-6 mt-4 rounded focus:outline-none focus:shadow-outline" type="submit" disabled={loading}>
                             Login
                         </button>
-                        <a className="inline-block mt-4 font-bold text-sm text-blue-500 hover:text-blue-800" href="/signup">
+                        <a className="inline-block mt-4 font-bold text-sm text-neutral-700 hover:text-black" href="/signup">
                             Need an account? Sign Up
                         </a>
                     </div>

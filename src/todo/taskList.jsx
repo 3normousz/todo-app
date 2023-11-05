@@ -25,18 +25,25 @@ function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate })
                     <ul>
                         {tasks[selectedDateString].map((task, index) => (
                             <List key={index}>
-                                <div className={`flex justify-between items-center`}>
-                                    <input
-                                        type="checkbox"
-                                        checked={tasks[selectedDateString][index].isCleared || false}
-                                        onClick={() => handleTaskCheck(index)}
-                                    />
-                                    <span className={`${tasks[selectedDateString][index].isCleared ? 'text-neutral-400 line-through' : ''}`}>
-                                        {task.task}
-                                    </span>
+                                <div className={`flex items-center justify-between`}> {/* Added 'justify-between' for spacing */}
+                                    <div className={`flex items-center`}>
+                                        <input
+                                            type="checkbox"
+                                            checked={tasks[selectedDateString][index].isCleared || false}
+                                            onClick={() => handleTaskCheck(index)}
+                                        />
+                                        <div className={`${tasks[selectedDateString][index].isCleared ? 'text-neutral-400 line-through' : ''} ml-4 break-all`}>
+                                            <span>
+                                                {task.task}
+                                            </span>
+                                            <span className='mt-2 text-neutral-300 block'>
+                                                {task.time !== '' ? task.time : 'No time specified'} {/* Unicode for non-breaking spaces */}
+                                            </span>
+                                        </div>
+                                    </div>
                                     <button
                                         onClick={() => onDeleteTask(selectedDateString, index)}
-                                        className='text-neutral-500'>
+                                        className='text-neutral-500 ml-2'>
                                         <TrashSimple color='white' size={16} />
                                     </button>
                                 </div>
@@ -44,9 +51,9 @@ function TaskList({ selectedDate, tasks, onDeleteTask, checkClearedTaskUpdate })
                         ))}
                     </ul>
                 </div>
-            )
-            }
-        </div >
+            )}
+        </div>
+
     )
 }
 

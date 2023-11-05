@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Helmet } from 'react-helmet';
 import Calendar from "./calendar/TaskCalendar"
 import ToDoAppBar from "./todo/toDoAddBar"
 import SignUp from './auth/signup';
@@ -28,6 +29,11 @@ function App() {
   return (
     <>
       <div className='mt-16 flex flex-col items-center'>
+        <Helmet>
+          <title>toDoApp | Login</title>
+          <meta name='description' content='An to do app, with a built-in calendar' />
+          <style>{'body { background-color: #222222; }'}</style>
+        </Helmet>
         <Router>
           <AuthProvider>
             <Routes>
@@ -36,12 +42,14 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path='/calendar' element={
                   <>
-                    <Calendar
-                      displayMonthValue={currentDate}
-                      currentDateOnChange={handleCurrentDateChange}
-                      currentSelectedDateOnChange={handleCurrentSelectedDateChange}
-                      tasks={tasksForDotDisplay} />
-                    <ToDoAppBar selectedDate={currentSelectedDate} tasksUpdateDotDisplay={handleSetTasksForDotDisplay} />
+                    <div className='w-[350px] md:w-[400px] mb-6'>
+                      <Calendar
+                        displayMonthValue={currentDate}
+                        currentDateOnChange={handleCurrentDateChange}
+                        currentSelectedDateOnChange={handleCurrentSelectedDateChange}
+                        tasks={tasksForDotDisplay} />
+                      <ToDoAppBar selectedDate={currentSelectedDate} tasksUpdateDotDisplay={handleSetTasksForDotDisplay} />
+                    </div>
                   </>
                 }
                 />

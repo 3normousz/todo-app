@@ -12,6 +12,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
     const [tasks, setTasks] = useState({});
 
     const textInput = useRef(null);
+    const timeInput = useRef(null);
 
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
     const user = auth.currentUser;
@@ -23,8 +24,8 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
         }
     }, []);
 
-    const handleTaskSubmit = (taskText) => {
-        if (selectedDate) {
+    const handleTaskSubmit = (taskText, taskTime) => {
+        if (selectedDate && taskText) {
             const formattedDate = format(selectedDate, 'yyyy-MM-dd');
             setTasks((prevTasks) => ({
                 ...prevTasks,
@@ -32,6 +33,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
                     ...(prevTasks[formattedDate] || []),
                     {
                         task: taskText,
+                        time: taskTime,
                         isCleared: false
                     },
                 ],
@@ -42,6 +44,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
                     ...(prevTasks[formattedDate] || []),
                     {
                         task: taskText,
+                        time: taskTime,
                         isCleared: false
                     },
                 ],
@@ -84,6 +87,7 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
         get(dbRef).then((snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
+                console.log(data);
                 setTasks(data);
                 tasksUpdateDotDisplay(data);
             }
@@ -99,9 +103,10 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        handleTaskSubmit(textInput.current.value);
+        handleTaskSubmit(textInput.current.value, timeInput.current.value);
 
         textInput.current.value = '';
+        timeInput.current.value = '';
     };
 
     return (
@@ -110,24 +115,24 @@ function ToDoAppBar({ selectedDate, tasksUpdateDotDisplay }) {
                 <h3 className='mt-6 my-6 font-bold text-center text-white'>
                     {format(selectedDate, 'MMMM dd, yyyy')}
                 </h3>
-                <div className='text-center'>
+                <div>
                     <form onSubmit={handleFormSubmit}>
                         <div className='flex flex-col'>
-                            <div>
+                            <div className='mt-2'>
                                 <div className="task-input-style">
                                     <input type="text" className='' ref={textInput} placeholder="" required />
                                     <label className='text-clip'>Add a task</label>
                                     <div className="underline"></div>
                                 </div>
-                                <div className='flex mt-4'>
-                                    <div className='time-input-style'>
-                                        <input type="time" className='' placeholder="" required />
-                                        <Clock className='clock-icon' size={16} weight='bold' />
-                                    </div>
+                                <div className='time-input-style'>
+                                    <input type="time" ref={timeInput} className='time-input-field' />
+                                    <Clock className='clock-icon' size={16} weight='bold' />
                                 </div>
-                                <button type="submit" className="mt-4 text-neutral-400 font-bold px-2 py-1 ml-2 rounded-full">
-                                    <Plus />
-                                </button>
+                                <div className='flex justify-center mt-6'>
+                                    <button type="submit" className="mt-4 text-neutral-400 hover:text-neutral-100 font-bold px-2 py-1 ml-2 rounded-full">
+                                        <Plus weight='bold' />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
